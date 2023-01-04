@@ -18,18 +18,16 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Admin {
+@NoArgsConstructor
+public class Category {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer adminId;
-	private String name;
-	private String email;
-	private String password;
+	private Integer categoryId;
+	private String categoryName;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "admin")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
 	@JsonIgnore
 	private List<Product> products= new ArrayList<>();
 
