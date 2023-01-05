@@ -19,8 +19,9 @@ public class CurrentSession {
 	@Id
 	@Column(unique = true)
 	private Integer id;
+	private String email;
 	private String role;
-	private String uuid;
+	private String key;
 	private LocalDateTime localDateTime;
 	
 
