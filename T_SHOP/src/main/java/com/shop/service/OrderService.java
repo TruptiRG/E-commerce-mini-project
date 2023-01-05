@@ -7,7 +7,7 @@ import com.shop.exception.OrderException;
 import com.shop.exception.UserException;
 import com.shop.model.Order;
 
-public interface OredrService {
+public interface OrderService {
 	
 	public Order addOrder(Integer userId)throws OrderException, UserException, CartException;
 	public Order viewOrder(Integer orderId) throws OrderException;
