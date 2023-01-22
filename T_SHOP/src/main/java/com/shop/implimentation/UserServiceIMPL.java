@@ -1,6 +1,7 @@
 package com.shop.implimentation;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,26 +19,44 @@ public class UserServiceIMPL implements UserService{
 
 	@Override
 	public User addUser(User user) throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+		User adduser=userRepo.save(user);
+		if(adduser==null) {
+			throw new UserException("User not added...");
+		}else {
+			return adduser;
+		}		
 	}
 
 	@Override
 	public User updateUser(User user) throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+		User u=userRepo.findByEmail(user.getEmail());
+		if(u!=null) {
+			userRepo.save(u);
+		}
+		return u;
 	}
 
 	@Override
 	public User deleteUser(Integer userId) throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<User> opt = userRepo.findById(userId);
+		if(opt.isPresent()) {
+			User user = opt.get();
+			userRepo.delete(user);
+			return user;
+		}else {
+			throw new UserException("User not found");
+		}
+		
 	}
 
 	@Override
 	public List<User> viewAllUser() throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> users =userRepo.findAll();
+		if(users.size()>0) {
+			return users;
+		}else {
+			throw new UserException("User not found");
+		}
 	}
 
 }

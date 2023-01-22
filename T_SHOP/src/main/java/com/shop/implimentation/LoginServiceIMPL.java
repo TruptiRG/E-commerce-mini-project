@@ -34,7 +34,7 @@ public class LoginServiceIMPL implements LoginService{
 	@Override
 	public String logInAccount(LoginDTO dto) throws LoginException {
 		if(!dto.getRole().equalsIgnoreCase("user")&&!dto.getRole().equalsIgnoreCase("admin")) {
-			throw new LoginException("Please specify the the role correctly 'user' or 'admin'..!");
+			throw new LoginException("Please specify the the role correctly as: 'user' or 'admin'..!");
 		}
 		if(dto.getRole().equalsIgnoreCase("user")) {
 			User user=userRepo.findByEmail(dto.getEmail());
@@ -84,8 +84,35 @@ public class LoginServiceIMPL implements LoginService{
 
 	@Override
 	public String logOutAccount(String role, String key) throws LoginException {
-		// TODO Auto-generated method stub
-		return null;
+		if(!role.equalsIgnoreCase("user") && !role.equalsIgnoreCase("admin")) {
+			throw new LoginException("Please specify the the role correctly as: 'user' or 'admin'..!");
+		}
+		if(role.equalsIgnoreCase("user")) {
+			CurrentSession currentSession=csRepo.findByKey(key);
+			if(currentSession==null) {
+				throw new LoginException("Invalid key");
+			}
+			if(currentSession.getRole().equalsIgnoreCase("user")) {
+				csRepo.delete(currentSession);
+				return "Logged Out";
+			}else {
+				throw new LoginException("Specify role : user or admin");
+			}
+		}else if(role.equalsIgnoreCase("admin")){
+			CurrentSession currentSession=csRepo.findByKey(key);
+			if(currentSession==null) {
+				throw new LoginException("Invalid key");
+			}
+			if(currentSession.getRole().equalsIgnoreCase("admin")) {
+				csRepo.delete(currentSession);
+				return "Logged Out";
+			}else {
+				throw new LoginException("Invalid");
+			}
+		}else {
+			throw new LoginException("Invalid");
+		}
+	
 	}
 
 }
